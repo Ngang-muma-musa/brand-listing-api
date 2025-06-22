@@ -71,7 +71,7 @@ root-nginx:
 test-dev: build-dev
 	docker exec -it -u root $$(docker-compose --project-name $(PROJECT_NAME) -f docker-compose-test.yml ps -q app) /bin/bash -c 'php artisan test'
 
-test1: build 
+test1: build
 	docker exec -u root $$(docker-compose --project-name $(PROJECT_NAME) ps -q app) sh -c 'php artisan test'
 
 composer: down dev
