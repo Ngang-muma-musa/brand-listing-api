@@ -47,7 +47,6 @@ class Country extends Model
      */
     public static function findByIso2(string $iso2Code): ?self
     {
-        // Ensure the lookup is case-insensitive by converting to uppercase
         return static::where('iso_alpha_2', strtoupper($iso2Code))->first();
     }
 
@@ -58,9 +57,6 @@ class Country extends Model
      */
     public function brands(): HasMany
     {
-        // A Country has many Brands.
-        // 'country_code' is the foreign key on the 'brands' table.
-        // 'iso_alpha_2' is the local key on the 'countries' table (this model).
         return $this->hasMany(Brand::class, 'country_code', 'iso_alpha_2');
     }
 }

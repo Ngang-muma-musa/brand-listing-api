@@ -16,7 +16,6 @@ interface BrandServiceInterface
     public function getPaginatedBrands(int $perPage = 15): LengthAwarePaginator;
 
     /**
-     * Get a toplist of brands based on a given country code, with a fallback.
      *
      * @param string|null $cfIpCountryHeaderValue The value from the CF-IPCountry HTTP header.
      * @param int $limit The maximum number of brands to return.

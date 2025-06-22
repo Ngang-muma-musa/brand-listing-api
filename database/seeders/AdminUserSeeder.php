@@ -14,7 +14,7 @@ class AdminUserSeeder extends Seeder
         $adminUserData = [
             'name' => 'Admin User',
             'email' => 'admin@example.com',
-            'password' => Hash::make('admin123'), // Use a secure password
+            'password' => Hash::make('admin123'),
             'email_verified_at' => Carbon::now(),
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),

@@ -43,11 +43,9 @@ deploy-production:
 pull:
 	docker pull mysql:5.7
 
-migrate:
-	bash migrate.sh  127.0.0.1 2533
-
 up:
 	docker-compose --project-name $(PROJECT_NAME) up -d
+	php artisan migrate --seed
 
 dev: build up
 
