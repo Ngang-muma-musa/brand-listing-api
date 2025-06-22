@@ -45,7 +45,7 @@ pull:
 
 up:
 	docker-compose --project-name $(PROJECT_NAME) up -d
-	php artisan migrate --seed
+	docker exec -u root $$(docker-compose --project-name $(PROJECT_NAME) ps -q app) php artisan migrate --seed
 
 dev: build up
 
@@ -96,6 +96,8 @@ ping-app:
 
 ping-nginx: 
 	docker-compose exec app ping nginx
+restart-nginx: 
+	docker-compose restart nginx
 cleanall: 
 	docker system prune
 restart: down dev

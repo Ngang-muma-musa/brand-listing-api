@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use App\Contracts\UserServiceInterface;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
+use Throwable;
 
 class UserController extends Controller
 {
@@ -28,29 +29,26 @@ class UserController extends Controller
             'password' => 'required|string',
         ]);
 
-        $user = $this->userService->login([
-            'email' => $request->email,
-            'password' => $request->password,
-        ]);
+        try {
+            $credentials = $request->only(['email', 'password']);
+            
+            $token = $this->userService->login($credentials);
 
-        if (!$user || !Hash::check($request->password, $user->password)) {
             return response()->json([
-                'message' => 'Invalid credentials'
-            ], 401);
-        }
+                'token_type' => 'Bearer',
+                'access_token' => $token,
+                'message' => 'Login successful'
+            ], 200);
 
-        $user->tokens->each(function ($token) {
-            $token->revoke();
-        });
+        } catch (Throwable $e) {
 
-        $token = $user->createToken('auth_token')->accessToken;
+            Log::error('Error logging in user: ' . $e->getMessage(), [
+                'trace' => $e->getTrace(),
+                'credentials' => $credentials
+            ]);
 
-        return response()->json([
-            'user' => $user->only(['id', 'name', 'email']),
-            'token_type' => 'Bearer',
-            'access_token' => $token,
-            'message' => 'Login successful'
-        ], 200);
+            return response()->json(['message' => 'Failed to log in: '. $e->getMessage()], 401);
+        }        
     }
 
     /**

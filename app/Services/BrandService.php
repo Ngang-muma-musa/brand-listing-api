@@ -36,12 +36,7 @@ class BrandService implements BrandServiceInterface
 
     public function createBrand(array $data): Brand
     {
-        if (!isset($data['admin_id']) && Auth::check()) {
-            $data['admin_id'] = Auth::id();
-        } else if (!isset($data['admin_id'])) {
-             Log::warning("No admin_id provided for brand creation and no user authenticated.");
-        }
-
+        $data['admin_id'] = Auth::id();
         return $this->brandRepository->create($data);
     }
 

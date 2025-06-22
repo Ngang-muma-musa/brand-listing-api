@@ -4,7 +4,6 @@ namespace App\Repositories\Eloquent;
 
 use App\Contracts\CountryRepositoryInterface;
 use App\Models\Country;
-use Illuminate\Database\Eloquent\Collection;
 
 class CountryRepository implements CountryRepositoryInterface
 {

@@ -27,7 +27,7 @@ COPY --from=composer:2.5 /usr/bin/composer /usr/bin/composer
 COPY . /var/www
 
 # Copy the existing .env file from the host to the container
-COPY .env.example /var/www/.env
+COPY .env /var/www/.env
 
 # Copy the custom PHP-FPM configuration file
 COPY www.conf /usr/local/etc/php-fpm.d/www.conf
@@ -52,5 +52,6 @@ RUN php artisan key:generate
 # Switch to www-data user
 USER www-data
 
+# Start PHP-FPM
 # Start PHP-FPM and run migrations and seeders
 CMD php-fpm && php artisan migrate --force && php artisan db:seed --force

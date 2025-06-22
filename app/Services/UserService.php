@@ -21,6 +21,9 @@ class UserService implements UserServiceInterface
     {
         if (Auth::attempt($credentials)) {
             $user = $this->userRepository->findByEmail($credentials['email']);
+            $user->tokens->each(function ($token) {
+                $token->revoke();
+            });
             return $user->createToken('Laravel Personal Access Client')->accessToken;
         }
 

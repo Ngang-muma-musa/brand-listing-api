@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Contracts\BrandServiceInterface;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use App\Exceptions\CustomException;
 
 class BrandController extends Controller
 {
@@ -17,22 +18,31 @@ class BrandController extends Controller
 
     public function index(): JsonResponse
     {
-        $brands = $this->brandService->getPaginatedBrands(15);
-        return response()->json($brands);
+        try{
+            $brands = $this->brandService->getPaginatedBrands(15);
+            return response()->json($brands);
+        } catch (\Exception $e) {
+            throw new CustomException($e, 'Failed to get items', 500); 
+        }
+        
     }
 
     public function store(Request $request): JsonResponse
     {
-        $validatedData = $request->validate([
-            'brand_name' => 'required|string|max:255',
-            'brand_image' => 'required|url|max:255',
-            'country_code' => 'required|char:2|exists:countries,iso_alpha_2',
-            'rating' => 'required|integer|min:0|max:5',
-        ]);
+        try {
+            $validatedData = $request->validate([
+                'brand_name' => 'required|string|max:255',
+                'brand_image' => 'required|url|max:255',
+                'country_code' => 'required|string|size:2|exists:countries,iso_alpha_2',
+                'rating' => 'required|integer|min:0|max:5',
+            ]);
 
-        $brand = $this->brandService->createBrand($validatedData);
+            $brand = $this->brandService->createBrand($validatedData);
 
-        return response()->json($brand, 201);
+            return response()->json($brand,201);
+        } catch (\Exception $e) {
+            throw new CustomException($e, $e->getMessage(), 400);
+        }
     }
 
     public function show(int $id): JsonResponse
@@ -43,25 +53,29 @@ class BrandController extends Controller
             return response()->json(['message' => 'Brand not found'], 404);
         }
 
-        return response()->json($brand);
+        return response()->json($brand,200);
     }
 
     public function update(Request $request, int $id): JsonResponse
     {
-        $validatedData = $request->validate([
-            'brand_name' => 'sometimes|string|max:255',
-            'brand_image' => 'sometimes|url|max:255',
-            'country_code' => 'sometimes|char:2|exists:countries,iso_alpha_2',
-            'rating' => 'sometimes|integer|min:0|max:5',
-        ]);
+        try {
+            $validatedData = $request->validate([
+                'brand_name' => 'string|max:255',
+                'brand_image' => 'url|max:255',
+                'country_code' => 'string|size:2|exists:countries,iso_alpha_2',
+                'rating' => 'integer|min:0|max:5',
+            ]);
 
-        $brand = $this->brandService->updateBrand($id, $validatedData);
+            $brand = $this->brandService->updateBrand($id, $validatedData);
 
-        if (!$brand) {
-            return response()->json(['message' => 'Brand not found'], 404);
+            if (!$brand) {
+                return response()->json(['message' => 'Brand not found'], 404);
+            }
+
+            return response()->json(204);
+        } catch (\Exception $e) {
+            throw new CustomException($e, $e->getMessage(), 400);
         }
-
-        return response()->json($brand);
     }
 
     public function destroy(int $id): JsonResponse
