@@ -30,6 +30,15 @@ help-default help: .title
 
 build:
 	docker-compose --project-name $(PROJECT_NAME) build --build-arg USER_ID=$(USER_ID) --build-arg GROUP_ID=$(GROUP_ID)
+
+deploy-acceptance:
+	echo "Deploying to acceptance"
+
+deploy-staging:
+	echo "Deploying to staging"	
+
+deploy-production:
+	echo "Deploying to production"
 	
 pull:
 	docker pull mysql:5.7
