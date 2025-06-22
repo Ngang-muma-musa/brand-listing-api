@@ -27,7 +27,7 @@ COPY --from=composer:2.5 /usr/bin/composer /usr/bin/composer
 COPY . /var/www
 
 # Copy the existing .env file from the host to the container
-COPY .env /var/www/.env
+COPY .env.example /var/www/.env
 
 # Copy the custom PHP-FPM configuration file
 COPY www.conf /usr/local/etc/php-fpm.d/www.conf
