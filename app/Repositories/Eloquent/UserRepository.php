@@ -3,10 +3,7 @@
 namespace App\Repositories\Eloquent;
 
 use App\Contracts\UserRepositoryInterface;
-use App\Models\User; // Ensure you import your User model
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Facades\Hash; // For password hashing
+use App\Models\User;
 
 class UserRepository implements UserRepositoryInterface
 {
@@ -16,7 +13,7 @@ class UserRepository implements UserRepositoryInterface
     {
         $this->model = $model;
     }
-    
+
     public function find(int $id): ?User
     {
         return $this->model->find($id);

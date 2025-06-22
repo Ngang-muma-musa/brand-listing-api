@@ -15,16 +15,6 @@ class CountryRepository implements CountryRepositoryInterface
         $this->model = $model;
     }
 
-    public function all(): Collection
-    {
-        return $this->model->all();
-    }
-
-    public function find(int $id): ?Country
-    {
-        return $this->model->find($id);
-    }
-
     public function findByIso2(string $iso2Code): ?Country
     {
         return $this->model->where('iso_alpha_2', strtoupper($iso2Code))->first();
