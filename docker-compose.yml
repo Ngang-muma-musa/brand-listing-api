@@ -9,7 +9,7 @@ services:
             - ./logs/php.log:/var/log/fpm-php.www.log
             - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
         ports:
-            - "9000:8000"
+            - "9000:9000"
         expose:
             - "9000"
         networks:
