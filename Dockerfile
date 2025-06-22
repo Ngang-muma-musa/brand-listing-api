@@ -52,5 +52,5 @@ RUN php artisan key:generate
 # Switch to www-data user
 USER www-data
 
-# Start PHP-FPM
-CMD php-fpm && php artisan migrate
+# Start PHP-FPM and run migrations and seeders
+CMD php-fpm && php artisan migrate --force && php artisan db:seed --force

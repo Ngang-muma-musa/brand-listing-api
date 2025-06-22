@@ -17,7 +17,7 @@ class UserService implements UserServiceInterface
         $this->userRepository = $userRepository;
     }
 
-    public function loginUser(array $credentials)
+    public function login(array $credentials)
     {
         if (Auth::attempt($credentials)) {
             $user = $this->userRepository->findByEmail($credentials['email']);
@@ -27,12 +27,7 @@ class UserService implements UserServiceInterface
         throw ValidationException::withMessages(['email' => ['The provided credentials are incorrect.']]);
     }
 
-    public function getUserRecord(int $userId):? User
-    {
-        return $this->userRepository->find($userId);
-    }
-
-    public function logOutUser($user)
+    public function logout($user)
     {
         foreach ($user->tokens as $token) {
             $token->revoke();

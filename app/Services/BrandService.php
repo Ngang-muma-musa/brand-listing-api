@@ -72,8 +72,7 @@ class BrandService implements BrandServiceInterface
         $countryCode = null;
 
         if ($cfIpCountryHeaderValue) {
-            // Use the CountryService to get the country
-            $country = $this->countryService->getCountryByIso2($cfIpCountryHeaderValue); // <--- UPDATED LINE
+            $country = $this->countryService->getCountryByIso2($cfIpCountryHeaderValue);
 
             if ($country) {
                 $countryCode = $country->iso_alpha_2;
