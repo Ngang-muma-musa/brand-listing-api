@@ -44,12 +44,9 @@ pull:
 	docker pull mysql:5.7
 
 up:
-	docker-compose --project-name $(PROJECT_NAME) up -d
+	docker-compose --project-name $(PROJECT_NAME) up -d	
 
-seed:
-	docker-compose --project-name $(PROJECT_NAME) exec -T -u root app php artisan migrate --seed
-
-dev: build up seed
+dev: build up
 
 build-dev:
 	docker-compose --project-name $(PROJECT_NAME) -f docker-compose-test.yml down
@@ -78,6 +75,7 @@ test1: build
 
 composer: down dev
 	docker exec -u root $$(docker-compose --project-name $(PROJECT_NAME) ps -q app) composer install
+	docker exec -u root $$(docker-compose --project-name $(PROJECT_NAME) ps -q app) php artisan migrate --seed
 
 test: 
 	php artisan config:clear
