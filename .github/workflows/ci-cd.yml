@@ -31,8 +31,6 @@ jobs:
           github.ref == 'refs/heads/write-unit-tests'
         run: |
           make composer
-          docker-compose exec -T app php artisan passport:install --force
-          make seed
 
       - name: start mysql
         run: sudo /etc/init.d/mysql start
@@ -41,12 +39,11 @@ jobs:
         run: mysql -uroot -proot -e "CREATE DATABASE IF NOT EXISTS laravel_test;"
 
       - name: Run tests on develop branch
-        if: |
-          github.ref == 'refs/heads/master' ||
-          github.ref == 'refs/heads/develop' ||
-          github.ref == 'refs/heads/Base-seteup-with-docker'||
-          github.ref == 'refs/heads/write-unit-tests'
-        run: make test
+        if: ${{ github.ref == 'refs/heads/develop }}
+        run: |
+          docker-compose exec -T app php artisan passport:install --force
+          make seed
+          make test
 
       - name: Deploy acceptance
         if: |
