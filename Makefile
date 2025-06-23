@@ -75,7 +75,6 @@ test1: build
 
 composer: down dev
 	docker exec -u root $$(docker-compose --project-name $(PROJECT_NAME) ps -q app) composer install
-	docker exec -u root $$(docker-compose --project-name $(PROJECT_NAME) ps -q app) php artisan migrate --seed
 
 test: 
 	php artisan config:clear
