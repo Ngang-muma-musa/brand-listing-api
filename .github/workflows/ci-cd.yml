@@ -43,7 +43,6 @@ jobs:
           github.ref == 'refs/heads/develop' ||
           github.ref == 'refs/heads/write-unit-tests'
         run: |
-          docker-compose exec -T app php artisan passport:install --force
           make seed
           make test
 
