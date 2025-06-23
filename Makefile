@@ -47,7 +47,7 @@ up:
 	docker-compose --project-name $(PROJECT_NAME) up -d
 
 seed:
-	docker exec -it -u root $$(docker-compose --project-name $(PROJECT_NAME) ps -q app) sh -c 'php artisan migrate --seed'
+	docker-compose --project-name $(PROJECT_NAME) exec -T -u root app php artisan migrate --seed
 
 dev: build up seed
 
