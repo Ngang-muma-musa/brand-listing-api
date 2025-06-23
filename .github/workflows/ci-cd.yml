@@ -30,6 +30,7 @@ jobs:
           github.ref == 'refs/heads/Base-seteup-with-docker'||
           github.ref == 'refs/heads/write-unit-tests'
         run: make composer
+        run: make seed
 
       - name: start mysql
         run: sudo /etc/init.d/mysql start
