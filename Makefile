@@ -46,6 +46,9 @@ pull:
 up:
 	docker-compose --project-name $(PROJECT_NAME) up -d
 	docker exec -u root $$(docker-compose --project-name $(PROJECT_NAME) ps -q app) php artisan migrate --seed
+
+seed:
+	docker exec -u root $$(docker-compose --project-name $(PROJECT_NAME) ps -q app) php artisan db:seed
 	
 dev: build up
 
