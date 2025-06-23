@@ -31,6 +31,8 @@ help-default help: .title
 build:
 	docker-compose --project-name $(PROJECT_NAME) build --build-arg USER_ID=$(USER_ID) --build-arg GROUP_ID=$(GROUP_ID)
 
+start-app: composer seed
+
 deploy-acceptance:
 	echo "Deploying to acceptance"
 
