@@ -43,11 +43,8 @@ deploy-production:
 pull:
 	docker pull mysql:5.7
 
-migrate:
-	bash migrate.sh  127.0.0.1 2533
-
 up:
-	docker-compose --project-name $(PROJECT_NAME) up -d
+	docker-compose --project-name $(PROJECT_NAME) up -d	
 
 dev: build up
 
@@ -73,11 +70,14 @@ root-nginx:
 test-dev: build-dev
 	docker exec -it -u root $$(docker-compose --project-name $(PROJECT_NAME) -f docker-compose-test.yml ps -q app) /bin/bash -c 'php artisan test'
 
-test1: build 
+test1: build
 	docker exec -u root $$(docker-compose --project-name $(PROJECT_NAME) ps -q app) sh -c 'php artisan test'
 
 composer: down dev
 	docker exec -u root $$(docker-compose --project-name $(PROJECT_NAME) ps -q app) composer install
+
+seed:
+	docker exec -u root $$(docker-compose --project-name $(PROJECT_NAME) ps -q app) sh -c 'php artisan migrate --seed --force'
 
 test: 
 	php artisan config:clear
@@ -98,6 +98,8 @@ ping-app:
 
 ping-nginx: 
 	docker-compose exec app ping nginx
+restart-nginx: 
+	docker-compose restart nginx
 cleanall: 
 	docker system prune
 restart: down dev
