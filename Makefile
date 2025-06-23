@@ -77,7 +77,7 @@ composer: down dev
 	docker exec -u root $$(docker-compose --project-name $(PROJECT_NAME) ps -q app) composer install
 
 seed: down dev
-	docker exec -u root $$(docker-compose --project-name $(PROJECT_NAME) ps -q app) sh -c 'php artisan migrate --seed'
+	docker exec -u root $$(docker-compose --project-name $(PROJECT_NAME) ps -q app) sh -c 'php artisan migrate --seed --force'
 
 test: 
 	php artisan config:clear
